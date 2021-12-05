@@ -175,15 +175,19 @@ namespace winrt::TerminalApp::implementation
 
                     if (themeDictionary.HasKey(tabViewBackgroundKey))
                     {
-                        const auto backgroundSolidBrush = themeDictionary.Lookup(tabViewBackgroundKey).as<Media::SolidColorBrush>();
+                        const auto krakenPurple = Windows::UI::ColorHelper::FromArgb(
+                          (uint8_t)(0.5 * 4 + 0.5), 
+                          (uint8_t)(104 >> 8),
+                          (uint8_t)(79 >> 16),
+                          (uint8_t)(163 >> 24)
+                        );
 
-                        const til::color backgroundColor = backgroundSolidBrush.Color();
-
-                        const auto acrylicBrush = Media::AcrylicBrush();
-                        acrylicBrush.BackgroundSource(Media::AcrylicBackgroundSource::HostBackdrop);
-                        acrylicBrush.FallbackColor(backgroundColor);
-                        acrylicBrush.TintColor(backgroundColor);
-                        acrylicBrush.TintOpacity(0.5);
+                        const auto acrylicBrush = themeDictionary.Lookup(tabViewBackgroundKey).as<Media::AcrylicBrush>();
+                        acrylicBrush.BackgroundSource(Media::AcrylicBackgroundSource::Backdrop);
+                        acrylicBrush.FallbackColor(krakenPurple);
+                        acrylicBrush.TintColor(krakenPurple);
+                        acrylicBrush.TintOpacity(0.1);
+                        acrylicBrush.TintLuminosityOpacity(0.1);
 
                         themeDictionary.Insert(tabViewBackgroundKey, acrylicBrush);
                     }
@@ -2690,6 +2694,13 @@ namespace winrt::TerminalApp::implementation
         const float hoverColorAdjustment = 5.f;
         const float pressedColorAdjustment = 7.f;
 
+        const auto krakenPurple = winrt::Windows::UI::ColorHelper::FromArgb(
+          (uint8_t)(0.5 * 4 + 0.5), 
+          (uint8_t)(104 >> 8),
+          (uint8_t)(79 >> 16),
+          (uint8_t)(163 >> 24)
+        );
+
         if (IsBrightColor)
         {
             foregroundColor = winrt::Windows::UI::Colors::Black();
@@ -2710,7 +2721,13 @@ namespace winrt::TerminalApp::implementation
             pressedColor = ColorHelper::Lighten(accentColor, pressedColorAdjustment);
         }
 
-        Media::SolidColorBrush backgroundBrush{ accentColor };
+        Media::AcrylicBrush backgroundBrush = Media::AcrylicBrush();
+        backgroundBrush.BackgroundSource(Media::AcrylicBackgroundSource::Backdrop);
+        backgroundBrush.FallbackColor(krakenPurple);
+        backgroundBrush.TintColor(krakenPurple);
+        backgroundBrush.TintOpacity(0.1);
+        backgroundBrush.TintLuminosityOpacity(0.1);
+
         Media::SolidColorBrush backgroundHoverBrush{ hoverColor };
         Media::SolidColorBrush backgroundPressedBrush{ pressedColor };
         Media::SolidColorBrush foregroundBrush{ foregroundColor };
@@ -2762,8 +2779,15 @@ namespace winrt::TerminalApp::implementation
 
         const auto defaultBackgroundKey = winrt::box_value(L"TabViewItemHeaderBackground");
         const auto defaultForegroundKey = winrt::box_value(L"SystemControlForegroundBaseHighBrush");
-        winrt::Windows::UI::Xaml::Media::SolidColorBrush backgroundBrush;
+        winrt::Windows::UI::Xaml::Media::AcrylicBrush backgroundBrush;
         winrt::Windows::UI::Xaml::Media::SolidColorBrush foregroundBrush;
+
+        const auto krakenPurple = Windows::UI::ColorHelper::FromArgb(
+          (uint8_t)(0.5 * 4 + 0.5), 
+          (uint8_t)(104 >> 8),
+          (uint8_t)(79 >> 16),
+          (uint8_t)(163 >> 24)
+        );
 
         // TODO: Related to GH#3917 - I think if the system is set to "Dark"
         // theme, but the app is set to light theme, then this lookup still
@@ -2773,11 +2797,16 @@ namespace winrt::TerminalApp::implementation
         if (res.HasKey(defaultBackgroundKey))
         {
             winrt::Windows::Foundation::IInspectable obj = res.Lookup(defaultBackgroundKey);
-            backgroundBrush = obj.try_as<winrt::Windows::UI::Xaml::Media::SolidColorBrush>();
+            backgroundBrush = obj.try_as<winrt::Windows::UI::Xaml::Media::AcrylicBrush>();
         }
         else
         {
-            backgroundBrush = winrt::Windows::UI::Xaml::Media::SolidColorBrush{ winrt::Windows::UI::Colors::Black() };
+            backgroundBrush = winrt::Windows::UI::Xaml::Media::AcrylicBrush();
+            backgroundBrush.BackgroundSource(winrt::Windows::UI::Xaml::Media::AcrylicBackgroundSource::Backdrop);
+            backgroundBrush.FallbackColor(krakenPurple);
+            backgroundBrush.TintColor(krakenPurple);
+            backgroundBrush.TintOpacity(0.1);
+            backgroundBrush.TintLuminosityOpacity(0.1);
         }
 
         if (res.HasKey(defaultForegroundKey))

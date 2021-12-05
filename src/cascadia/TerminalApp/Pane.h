@@ -202,8 +202,8 @@ private:
     winrt::Windows::UI::Xaml::Controls::Border _borderSecond{};
     winrt::Microsoft::Terminal::Control::TermControl _control{ nullptr };
     winrt::Microsoft::Terminal::TerminalConnection::ConnectionState _connectionState{ winrt::Microsoft::Terminal::TerminalConnection::ConnectionState::NotConnected };
-    static winrt::Windows::UI::Xaml::Media::SolidColorBrush s_focusedBorderBrush;
-    static winrt::Windows::UI::Xaml::Media::SolidColorBrush s_unfocusedBorderBrush;
+    static winrt::Windows::UI::Xaml::Media::AcrylicBrush s_focusedBorderBrush;
+    static winrt::Windows::UI::Xaml::Media::AcrylicBrush s_unfocusedBorderBrush;
 
     std::shared_ptr<Pane> _firstChild{ nullptr };
     std::shared_ptr<Pane> _secondChild{ nullptr };

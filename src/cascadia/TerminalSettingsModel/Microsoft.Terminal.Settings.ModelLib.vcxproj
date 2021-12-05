@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA5CAD1A-d7ec-4107-b7c6-79cb77ae2907}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -183,7 +184,6 @@
   <ItemGroup>
     <PRIResource Include="Resources\en-US\Resources.resw" />
     <OCResourceDirectory Include="Resources" />
-    <None Include="packages.config" />
   </ItemGroup>
   <!-- ========================= Project References ======================== -->
   <ItemGroup>
@@ -197,7 +197,6 @@
       <Project>{CA5CAD1A-039A-4929-BA2A-8BEB2E4106FE}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-
     <!-- For whatever reason, we can't include the TerminalControl and
     TerminalSettings projects' winmds via project references. So we'll have to
     manually include the winmds as References below
@@ -210,7 +209,6 @@
 
     We do still need to separately reference the winmds manually below, which is annoying.
     -->
-
     <ProjectReference Include="$(OpenConsoleDir)src\cascadia\TerminalControl\dll\TerminalControl.vcxproj">
       <!-- Private:true and ReferenceOutputAssembly:false, in combination with
       the manual reference to TerminalControl.winmd below make sure that this
@@ -219,7 +217,6 @@
       <Private>true</Private>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-
   </ItemGroup>
   <ItemGroup>
     <!-- Manually add references to each of our dependent winmds. Mark them as
@@ -245,6 +242,9 @@
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <!-- ====================== Compiler & Linker Flags ===================== -->
   <ItemDefinitionGroup>
     <ClCompile>
@@ -262,13 +262,15 @@
   </ItemDefinitionGroup>
   <!-- ========================= Globals ======================== -->
   <Import Project="$(OpenConsoleDir)src\cppwinrt.build.post.props" />
-  <Import Project="..\..\..\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets" Condition="Exists('..\..\..\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets')" />
+  <Import Project="..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets" Condition="Exists('..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.2.3.2262\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.2.3.2262\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets'))" />
+    <Error Condition="!Exists('$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.3.0.4492\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.3.0.4492\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
   <!-- This target will take our defaults.json and stamp it into a .h file that
   we can include in the code directly. This way, we don't need to worry about
@@ -285,6 +287,6 @@
     <Exec Command="pwsh.exe -NoProfile –ExecutionPolicy Unrestricted $(OpenConsoleDir)\tools\GenerateHeaderForJson.ps1 -JsonFile userDefaults.json -OutPath &quot;Generated Files\userDefaults.h&quot; -VariableName UserSettingsJson" />
   </Target>
   <Import Project="$(SolutionDir)build\rules\CollectWildcardResources.targets" />
-  <Import Project="..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.2.3.2262\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets" Condition="Exists('..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.2.3.2262\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets')" />
-
+  <Import Project="..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.3.0.4492\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets" Condition="Exists('..\..\..\packages\Microsoft.VisualStudio.Setup.Configuration.Native.3.0.4492\build\native\Microsoft.VisualStudio.Setup.Configuration.Native.targets')" />
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
 </Project>

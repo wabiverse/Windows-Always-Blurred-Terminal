@@ -31,8 +31,8 @@ static const int CombinedPaneBorderSize = 2 * PaneBorderSize;
 static const int AnimationDurationInMilliseconds = 200;
 static const Duration AnimationDuration = DurationHelper::FromTimeSpan(winrt::Windows::Foundation::TimeSpan(std::chrono::milliseconds(AnimationDurationInMilliseconds)));
 
-winrt::Windows::UI::Xaml::Media::SolidColorBrush Pane::s_focusedBorderBrush = { nullptr };
-winrt::Windows::UI::Xaml::Media::SolidColorBrush Pane::s_unfocusedBorderBrush = { nullptr };
+winrt::Windows::UI::Xaml::Media::AcrylicBrush Pane::s_focusedBorderBrush = { nullptr };
+winrt::Windows::UI::Xaml::Media::AcrylicBrush Pane::s_unfocusedBorderBrush = { nullptr };
 
 Pane::Pane(const Profile& profile, const TermControl& control, const bool lastFocused) :
     _control{ control },
@@ -142,18 +142,15 @@ NewTerminalArgs Pane::GetTerminalArgsForPane() const
     args.SuppressApplicationTitle(controlSettings.SuppressApplicationTitle());
     if (controlSettings.TabColor() || controlSettings.StartingTabColor())
     {
-        til::color c;
         // StartingTabColor is prioritized over other colors
-        if (const auto color = controlSettings.StartingTabColor())
+        if (const auto &color = controlSettings.StartingTabColor())
         {
-            c = til::color(color.Value());
+            args.TabColor(winrt::Windows::Foundation::IReference<winrt::Windows::UI::Color>(std::optional<til::color>{color.Value()}));
         }
         else
         {
-            c = til::color(controlSettings.TabColor().Value());
+            args.TabColor(winrt::Windows::Foundation::IReference<winrt::Windows::UI::Color>(std::optional<til::color>{controlSettings.TabColor().Value()}));
         }
-
-        args.TabColor(winrt::Windows::Foundation::IReference<winrt::Windows::UI::Color>(c));
     }
 
     // TODO:GH#9800 - we used to be able to persist the color scheme that a
@@ -3125,35 +3122,58 @@ void Pane::_SetupResources()
 {
     const auto res = Application::Current().Resources();
     const auto accentColorKey = winrt::box_value(L"SystemAccentColor");
+
+    const auto krakenPurple = ColorHelper::FromArgb(
+      (uint8_t)(0.5 * 4 + 0.5), 
+      (uint8_t)(104 >> 8),
+      (uint8_t)(79 >> 16),
+      (uint8_t)(163 >> 24)
+    );
+
     if (res.HasKey(accentColorKey))
     {
         const auto colorFromResources = res.Lookup(accentColorKey);
         // If SystemAccentColor is _not_ a Color for some reason, use
         // Transparent as the color, so we don't do this process again on
         // the next pane (by leaving s_focusedBorderBrush nullptr)
-        auto actualColor = winrt::unbox_value_or<Color>(colorFromResources, Colors::Black());
-        s_focusedBorderBrush = SolidColorBrush(actualColor);
+        auto actualColor = winrt::unbox_value_or<Color>(colorFromResources, krakenPurple);
+        s_focusedBorderBrush = AcrylicBrush();
+        s_focusedBorderBrush.BackgroundSource(AcrylicBackgroundSource::Backdrop);
+        s_focusedBorderBrush.FallbackColor(actualColor);
+        s_focusedBorderBrush.TintColor(actualColor);
+        s_focusedBorderBrush.TintOpacity(0.1);
+        s_focusedBorderBrush.TintLuminosityOpacity(0.1);
     }
     else
     {
         // DON'T use Transparent here - if it's "Transparent", then it won't
         // be able to hittest for clicks, and then clicking on the border
         // will eat focus.
-        s_focusedBorderBrush = SolidColorBrush{ Colors::Black() };
+        s_focusedBorderBrush = AcrylicBrush();
+        s_focusedBorderBrush.BackgroundSource(AcrylicBackgroundSource::Backdrop);
+        s_focusedBorderBrush.FallbackColor(krakenPurple);
+        s_focusedBorderBrush.TintColor(krakenPurple);
+        s_focusedBorderBrush.TintOpacity(0.1);
+        s_focusedBorderBrush.TintLuminosityOpacity(0.1);
     }
 
     const auto unfocusedBorderBrushKey = winrt::box_value(L"UnfocusedBorderBrush");
     if (res.HasKey(unfocusedBorderBrushKey))
     {
         winrt::Windows::Foundation::IInspectable obj = res.Lookup(unfocusedBorderBrushKey);
-        s_unfocusedBorderBrush = obj.try_as<winrt::Windows::UI::Xaml::Media::SolidColorBrush>();
+        s_unfocusedBorderBrush = obj.try_as<winrt::Windows::UI::Xaml::Media::AcrylicBrush>();
     }
     else
     {
         // DON'T use Transparent here - if it's "Transparent", then it won't
         // be able to hittest for clicks, and then clicking on the border
         // will eat focus.
-        s_unfocusedBorderBrush = SolidColorBrush{ Colors::Black() };
+        s_unfocusedBorderBrush = AcrylicBrush();
+        s_unfocusedBorderBrush.BackgroundSource(AcrylicBackgroundSource::Backdrop);
+        s_unfocusedBorderBrush.FallbackColor(krakenPurple);
+        s_unfocusedBorderBrush.TintColor(krakenPurple);
+        s_unfocusedBorderBrush.TintOpacity(0.1);
+        s_unfocusedBorderBrush.TintLuminosityOpacity(0.1);
     }
 }
 

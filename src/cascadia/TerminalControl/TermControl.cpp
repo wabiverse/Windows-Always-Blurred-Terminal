@@ -25,6 +25,7 @@ using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::UI::ViewManagement;
 using namespace winrt::Windows::UI::Input;
 using namespace winrt::Windows::System;
+using namespace winrt::Windows::ApplicationModel::Core;
 using namespace winrt::Windows::ApplicationModel::DataTransfer;
 
 // The minimum delay between updates to the scroll bar's values.
@@ -303,7 +304,8 @@ namespace winrt::Microsoft::Terminal::Control::implementation
         // In the future, this might need to be changed to a
         // _InitializeBackgroundBrush call instead, because we may need to
         // switch from a solid color brush to an acrylic one.
-        _changeBackgroundColor(bg);
+        _InitializeBackgroundBrush();
+        // _changeBackgroundColor(bg);
 
         // Set TSF Foreground
         Media::SolidColorBrush foregroundBrush{};
@@ -451,6 +453,7 @@ namespace winrt::Microsoft::Terminal::Control::implementation
     {
         auto settings{ _core.Settings() };
         auto bgColor = til::color{ _core.FocusedAppearance().DefaultBackground() }.with_alpha(0xff);
+
         if (settings.UseAcrylic())
         {
             // See if we've already got an acrylic background brush

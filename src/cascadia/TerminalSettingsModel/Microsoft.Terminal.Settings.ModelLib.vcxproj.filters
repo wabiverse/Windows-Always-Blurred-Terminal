@@ -114,14 +114,14 @@
     <Midl Include="ApplicationState.idl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="profileGeneration">
       <UniqueIdentifier>{c81be61b-0d58-4277-8fd1-fcc888c3da9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="json">
       <UniqueIdentifier>{81a6314f-aa5b-4533-a499-13bc3a5c4af0}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
     <TargetName>ConTypes</TargetName>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)src\common.build.pre.props" />
+  <Import Project="..\..\..\src\common.build.pre.props" />
   <ItemGroup>
     <ClCompile Include="..\CodepointWidthDetector.cpp" />
     <ClCompile Include="..\convert.cpp" />
@@ -67,5 +67,5 @@
     </ProjectReference>
   </ItemGroup>
   <!-- Careful reordering these. Some default props (contained in these files) are order sensitive. -->
-  <Import Project="$(SolutionDir)src\common.build.post.props" />
+  <Import Project="..\..\..\src\common.build.post.props" />
 </Project>

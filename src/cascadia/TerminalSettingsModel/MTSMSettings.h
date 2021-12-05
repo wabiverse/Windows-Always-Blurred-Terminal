@@ -35,7 +35,7 @@ Author(s):
     X(hstring, Language, "language")                                                                                                                       \
     X(winrt::Windows::UI::Xaml::ElementTheme, Theme, "theme", winrt::Windows::UI::Xaml::ElementTheme::Default)                                             \
     X(winrt::Microsoft::UI::Xaml::Controls::TabViewWidthMode, TabWidthMode, "tabWidthMode", winrt::Microsoft::UI::Xaml::Controls::TabViewWidthMode::Equal) \
-    X(bool, UseAcrylicInTabRow, "useAcrylicInTabRow", false)                                                                                               \
+    X(bool, UseAcrylicInTabRow, "useAcrylicInTabRow", true)                                                                                               \
     X(bool, ShowTabsInTitlebar, "showTabsInTitlebar", true)                                                                                                \
     X(bool, InputServiceWarning, "inputServiceWarning", true)                                                                                              \
     X(winrt::Microsoft::Terminal::Control::CopyFormat, CopyFormatting, "copyFormatting", 0)                                                                \
@@ -63,7 +63,7 @@ Author(s):
     X(int32_t, HistorySize, "historySize", DEFAULT_HISTORY_SIZE)                                                                                               \
     X(bool, SnapOnInput, "snapOnInput", true)                                                                                                                  \
     X(bool, AltGrAliasing, "altGrAliasing", true)                                                                                                              \
-    X(bool, UseAcrylic, "useAcrylic", false)                                                                                                                   \
+    X(bool, UseAcrylic, "useAcrylic", true)                                                                                                                   \
     X(hstring, Commandline, "commandline", L"%SystemRoot%\\System32\\cmd.exe")                                                                                 \
     X(Microsoft::Terminal::Control::ScrollbarState, ScrollState, "scrollbarState", Microsoft::Terminal::Control::ScrollbarState::Visible)                      \
     X(Microsoft::Terminal::Control::TextAntialiasingMode, AntialiasingMode, "antialiasingMode", Microsoft::Terminal::Control::TextAntialiasingMode::Grayscale) \

@@ -45,7 +45,7 @@
             "antialiasingMode": "grayscale",
             "closeOnExit": "graceful",
             "cursorShape": "bar",
-            "fontFace": "Cascadia Mono",
+            "fontFace": "FiraCode NF",
             "fontSize": 12,
             "hidden": false,
             "historySize": 9001,
@@ -53,7 +53,7 @@
             "snapOnInput": true,
             "altGrAliasing": true,
             "startingDirectory": "%USERPROFILE%",
-            "useAcrylic": false
+            "useAcrylic": true
         },
         {
             "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
@@ -64,7 +64,7 @@
             "antialiasingMode": "grayscale",
             "closeOnExit": "graceful",
             "cursorShape": "bar",
-            "fontFace": "Cascadia Mono",
+            "fontFace": "FiraCode NF",
             "fontSize": 12,
             "hidden": false,
             "historySize": 9001,
@@ -72,7 +72,7 @@
             "snapOnInput": true,
             "altGrAliasing": true,
             "startingDirectory": "%USERPROFILE%",
-            "useAcrylic": false
+            "useAcrylic": true
         }
     ],
     "schemes":

@@ -34,6 +34,8 @@
 #include <winrt/Windows.Foundation.Metadata.h>
 #include <winrt/Windows.Graphics.Display.h>
 #include <winrt/windows.ui.core.h>
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.ViewManagement.h>
 #include <winrt/Windows.ui.input.h>
 #include <winrt/Windows.UI.Text.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>

@@ -141,7 +141,7 @@ namespace winrt::Microsoft::Terminal::Settings::Model::implementation
             }
             if (newTerminalArgs.TabColor())
             {
-                defaultSettings.StartingTabColor(winrt::Windows::Foundation::IReference<winrt::Microsoft::Terminal::Core::Color>{ til::color{ newTerminalArgs.TabColor().Value() } });
+                defaultSettings.StartingTabColor(winrt::Windows::Foundation::IReference<winrt::Microsoft::Terminal::Core::Color>{ std::optional<til::color>{ newTerminalArgs.TabColor().Value() } });
             }
             if (newTerminalArgs.SuppressApplicationTitle())
             {

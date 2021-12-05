@@ -1601,7 +1601,7 @@
           "type": "boolean"
         },
         "useAcrylicInTabRow": {
-          "default": false,
+          "default": true,
           "description": "When set to true, the tab row will have an acrylic background with 50% opacity.",
           "type": "boolean"
         },
@@ -1969,7 +1969,7 @@
           "type": "string"
         },
         "opacity": {
-          "default": 100,
+          "default": 50,
           "description": "Sets the opacity of the window for the profile. Accepts values from 0-100. Defaults to 50 when useAcrylic is set to true.",
           "maximum": 100,
           "minimum": 0,
@@ -2054,7 +2054,7 @@
           ]
         },
         "useAcrylic": {
-          "default": false,
+          "default": true,
           "description": "When set to true, the window will have an acrylic background. When set to false, the window will have a plain, untextured background.",
           "type": "boolean"
         }

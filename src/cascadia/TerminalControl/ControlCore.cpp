@@ -587,7 +587,7 @@ namespace winrt::Microsoft::Terminal::Control::implementation
 
     Windows::Foundation::IReference<Core::Point> ControlCore::HoveredCell() const
     {
-        return _lastHoveredCell.has_value() ? Windows::Foundation::IReference<Core::Point>{ _lastHoveredCell.value() } : nullptr;
+        return _lastHoveredCell.has_value() ? Windows::Foundation::IReference<winrt::Microsoft::Terminal::Core::Point>{ _lastHoveredCell } : nullptr;
     }
 
     // Method Description:
@@ -1094,9 +1094,8 @@ namespace winrt::Microsoft::Terminal::Control::implementation
 
     Windows::Foundation::IReference<winrt::Windows::UI::Color> ControlCore::TabColor() noexcept
     {
-        auto coreColor = _terminal->GetTabColor();
-        return coreColor.has_value() ? Windows::Foundation::IReference<winrt::Windows::UI::Color>(til::color{ coreColor.value() }) :
-                                       nullptr;
+        const std::optional<til::color> &coreColor = _terminal->GetTabColor();
+        return coreColor.has_value() ? Windows::Foundation::IReference<winrt::Windows::UI::Color>(coreColor) : nullptr;
     }
 
     til::color ControlCore::BackgroundColor() const

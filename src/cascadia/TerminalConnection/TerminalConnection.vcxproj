@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA5CAD1A-C46D-4588-B1C0-40F31AE9100B}</ProjectGuid>
     <ProjectName>TerminalConnection</ProjectName>
@@ -87,6 +88,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\packages\vcpkg-cpprestsdk.2.10.14\build\native\vcpkg-cpprestsdk.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\vcpkg-cpprestsdk.2.10.14\build\native\vcpkg-cpprestsdk.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -96,8 +99,7 @@
       <AdditionalDependencies>$(OpenConsoleCommonOutDir)\conptylib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <Import Project="$(SolutionDir)build\rules\CollectWildcardResources.targets" />
-
+  <Import Project="..\..\..\build\rules\CollectWildcardResources.targets" />
   <!--
   BODGY:
 
@@ -121,15 +123,8 @@
   _CopyFilesMarkedCopyLocal, and always creates the CopyUpToDateMarker. This
   makes the FastUpToDate check succeed.
   -->
-
-  <Target
-      Name="_Post_CopyFilesMarkedCopyLocal"
-      AfterTargets="_CopyFilesMarkedCopyLocal"
-      Condition="'@(ReferenceCopyLocalPaths)' != ''">
-
-    <Touch Files="@(CopyUpToDateMarker)"
-      AlwaysCreate="true" />
+  <Target Name="_Post_CopyFilesMarkedCopyLocal" AfterTargets="_CopyFilesMarkedCopyLocal" Condition="'@(ReferenceCopyLocalPaths)' != ''">
+    <Touch Files="@(CopyUpToDateMarker)" AlwaysCreate="true" />
   </Target>
-
-
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
 </Project>

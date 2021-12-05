@@ -1425,8 +1425,9 @@ namespace winrt::TerminalApp::implementation
     // - <none>
     void TerminalTab::_ApplyTabColor(const winrt::Windows::UI::Color& color)
     {
+        Media::AcrylicBrush deselectedTabBrush = Media::AcrylicBrush();
+
         Media::SolidColorBrush selectedTabBrush{};
-        Media::SolidColorBrush deselectedTabBrush{};
         Media::SolidColorBrush fontBrush{};
         Media::SolidColorBrush hoverTabBrush{};
         // calculate the luminance of the current color and select a font
@@ -1446,9 +1447,20 @@ namespace winrt::TerminalApp::implementation
 
         // currently if a tab has a custom color, a deselected state is
         // signified by using the same color with a bit ot transparency
-        auto deselectedTabColor = color;
-        deselectedTabColor.A = 64;
-        deselectedTabBrush.Color(deselectedTabColor);
+        // auto deselectedTabColor = color;
+        // deselectedTabColor.A = 64;
+
+        const auto krakenPurple = winrt::Windows::UI::ColorHelper::FromArgb(
+          (uint8_t)(0.5 * 4 + 0.5), 
+          (uint8_t)(104 >> 8),
+          (uint8_t)(79 >> 16),
+          (uint8_t)(163 >> 24)
+        );
+        deselectedTabBrush.BackgroundSource(Media::AcrylicBackgroundSource::Backdrop);
+        deselectedTabBrush.FallbackColor(krakenPurple);
+        deselectedTabBrush.TintColor(krakenPurple);
+        deselectedTabBrush.TintOpacity(0.1);
+        deselectedTabBrush.TintLuminosityOpacity(0.1);
 
         // currently if a tab has a custom color, a deselected state is
         // signified by using the same color with a bit of transparency
@@ -1529,10 +1541,24 @@ namespace winrt::TerminalApp::implementation
             }
         }
 
+        const auto krakenPurple = winrt::Windows::UI::ColorHelper::FromArgb(
+          (uint8_t)(0.5 * 4 + 0.5), 
+          (uint8_t)(104 >> 8),
+          (uint8_t)(79 >> 16),
+          (uint8_t)(163 >> 24)
+        );
+
         // GH#11382 DON'T set the background to null. If you do that, then the
         // tab won't be hit testable at all. Transparent, however, is a totally
         // valid hit test target. That makes sense.
-        TabViewItem().Background(WUX::Media::SolidColorBrush{ Windows::UI::Colors::Transparent() });
+
+        const auto tabViewBackground = WUX::Media::AcrylicBrush();
+        tabViewBackground.BackgroundSource(WUX::Media::AcrylicBackgroundSource::Backdrop);
+        tabViewBackground.FallbackColor(krakenPurple);
+        tabViewBackground.TintColor(krakenPurple);
+        tabViewBackground.TintOpacity(0.1);
+        tabViewBackground.TintLuminosityOpacity(0.1);
+        TabViewItem().Background(tabViewBackground);
 
         _RefreshVisualState();
         _colorCleared();

@@ -31,9 +31,9 @@ namespace WindowsTerminal.UIA.Tests.Elements
 
         private IntPtr job;
 
-        public IOSDriver<IOSElement> Session { get; private set; }
+        // public IOSDriver<IOSElement> Session { get; private set; }
         public Actions Actions { get; private set; }
-        public AppiumWebElement UIRoot { get; private set; }
+        // public AppiumWebElement UIRoot { get; private set; }
 
         private bool isDisposed = false;
 
@@ -82,10 +82,10 @@ namespace WindowsTerminal.UIA.Tests.Elements
             GC.SuppressFinalize(this);
         }
 
-        public AppiumWebElement GetRoot()
-        {
-            return this.UIRoot;
-        }
+        // public AppiumWebElement GetRoot()
+        // {
+        //     // return this.UIRoot;
+        // }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -136,20 +136,20 @@ namespace WindowsTerminal.UIA.Tests.Elements
 
             Globals.WaitForTimeout();
 
-            DesiredCapabilities appCapabilities = new DesiredCapabilities();
-            appCapabilities.SetCapability("app", @"Root");
-            Session = new IOSDriver<IOSElement>(new Uri(AppDriverUrl), appCapabilities);
+            // DesiredCapabilities appCapabilities = new DesiredCapabilities();
+            // appCapabilities.SetCapability("app", @"Root");
+            // Session = new IOSDriver<IOSElement>(new Uri(AppDriverUrl), appCapabilities);
 
-            Verify.IsNotNull(Session);
-            Actions = new Actions(Session);
-            Verify.IsNotNull(Session);
+            // Verify.IsNotNull(Session);
+            // Actions = new Actions(Session);
+            // Verify.IsNotNull(Session);
 
             Globals.WaitForLongTimeout();
 
-            UIRoot = Session.FindElementByName(WindowTitleToFind);
+            // UIRoot = Session.FindElementByName(WindowTitleToFind);
 
             // Set the timeout to 15 seconds after we found the initial window.
-            Session.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+            // Session.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
         }
 
         private bool IsRunningAsAdmin()
@@ -164,7 +164,7 @@ namespace WindowsTerminal.UIA.Tests.Elements
             // Release attachment to the child process console.
             WinCon.FreeConsole();
 
-            this.UIRoot = null;
+            // this.UIRoot = null;
 
             if (this.job != IntPtr.Zero)
             {

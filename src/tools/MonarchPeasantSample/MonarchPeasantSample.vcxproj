@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{21b7ea5e-1ef8-49b6-ac07-11714af0e37d}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -12,15 +12,12 @@
     <ApplicationType>Windows Store</ApplicationType>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
   </PropertyGroup>
-
   <Import Project="..\..\..\common.openconsole.props" Condition="'$(OpenConsoleDir)'==''" />
   <Import Project="$(OpenConsoleDir)src\cppwinrt.build.pre.props" />
-
   <PropertyGroup>
     <GenerateManifest>true</GenerateManifest>
     <EmbedManifest>true</EmbedManifest>
   </PropertyGroup>
-
   <!-- Source Files -->
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -32,7 +29,6 @@
       <DependentUpon>SamplePeasant.idl</DependentUpon>
     </ClInclude>
   </ItemGroup>
-
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="AppState.cpp" />
@@ -48,21 +44,14 @@
       <DependentUpon>SamplePeasant.idl</DependentUpon>
     </ClCompile>
   </ItemGroup>
-
   <ItemGroup>
     <Midl Include="SampleMonarch.idl" />
     <Midl Include="SamplePeasant.idl" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-
   <!-- Dependencies -->
   <ItemGroup>
     <ProjectReference Include="$(OpenConsoleDir)src\types\lib\types.vcxproj" />
   </ItemGroup>
-
   <!--
     This ItemGroup and the Globals PropertyGroup below it are required in order
     to enable F5 debugging for the unpackaged application
@@ -71,12 +60,13 @@
     <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\debugger_general.xml" />
     <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\debugger_local_windows.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
-
   <Import Project="$(OpenConsoleDir)src\cppwinrt.build.post.props" />
-
   <!-- These have to come after post.props because the Cpp common targets will inexplicably overwrite them. -->
   <ItemDefinitionGroup>
     <ClCompile>
@@ -86,6 +76,13 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-
   <Import Project="$(OpenConsoleDir)\build\rules\GenerateSxsManifestsFromWinmds.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+  </Target>
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
 </Project>

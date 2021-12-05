@@ -160,98 +160,98 @@ function Invoke-TaefInNewWindow()
 # "Release". Defaults to "Debug".
 function Invoke-OpenConsoleTests()
 {
-    [CmdletBinding()]
-    Param (
-        [parameter(Mandatory=$false)]
-        [switch]$AllTests,
+    # [CmdletBinding()]
+    # Param (
+    #     [parameter(Mandatory=$false)]
+    #     [switch]$AllTests,
 
-        [parameter(Mandatory=$false)]
-        [switch]$FTOnly,
+    #     [parameter(Mandatory=$false)]
+    #     [switch]$FTOnly,
 
-        [parameter(Mandatory=$false)]
-        [ValidateSet('host', 'interactivityWin32', 'terminal', 'adapter', 'feature', 'uia', 'textbuffer', 'til', 'types', 'terminalCore', 'terminalApp', 'localTerminalApp', 'localSettingsModel', 'unitRemoting', 'unitControl')]
-        [string]$Test,
+    #     [parameter(Mandatory=$false)]
+    #     [ValidateSet('host', 'interactivityWin32', 'terminal', 'adapter', 'feature', 'uia', 'textbuffer', 'til', 'types', 'terminalCore', 'terminalApp', 'localTerminalApp', 'localSettingsModel', 'unitRemoting', 'unitControl')]
+    #     [string]$Test,
 
-        [parameter(Mandatory=$false)]
-        [string[]]$TaefArgs,
+    #     [parameter(Mandatory=$false)]
+    #     [string[]]$TaefArgs,
 
-        [parameter(Mandatory=$false)]
-        [ValidateSet('x64', 'x86')]
-        [string]$Platform = "x64",
+    #     [parameter(Mandatory=$false)]
+    #     [ValidateSet('x64', 'x86')]
+    #     [string]$Platform = "x64",
 
-        [parameter(Mandatory=$false)]
-        [ValidateSet('Debug', 'Release')]
-        [string]$Configuration = "Debug"
+    #     [parameter(Mandatory=$false)]
+    #     [ValidateSet('Debug', 'Release')]
+    #     [string]$Configuration = "Debug"
 
-    )
+    # )
 
-    $root = Find-OpenConsoleRoot
+    # $root = Find-OpenConsoleRoot
 
-    if (($AllTests -and $FTOnly) -or ($AllTests -and $Test) -or ($FTOnly -and $Test))
-    {
-        Write-Host "Invalid combination of flags" -ForegroundColor Red
-        return
-    }
-    $OpenConsolePlatform = $Platform
-    if ($Platform -eq 'x86')
-    {
-        $OpenConsolePlatform = 'Win32'
-    }
-    $OpenConsolePath = "$env:OpenConsoleroot\bin\$OpenConsolePlatform\$Configuration\OpenConsole.exe"
-    $TaefExePath = "$root\packages\Microsoft.Taef.10.60.210621002\build\Binaries\$Platform\te.exe"
-    $BinDir = "$root\bin\$OpenConsolePlatform\$Configuration"
+    # if (($AllTests -and $FTOnly) -or ($AllTests -and $Test) -or ($FTOnly -and $Test))
+    # {
+    #     Write-Host "Invalid combination of flags" -ForegroundColor Red
+    #     return
+    # }
+    # $OpenConsolePlatform = $Platform
+    # if ($Platform -eq 'x86')
+    # {
+    #     $OpenConsolePlatform = 'Win32'
+    # }
+    # $OpenConsolePath = "$env:OpenConsoleroot\bin\$OpenConsolePlatform\$Configuration\OpenConsole.exe"
+    # $TaefExePath = "$root\packages\Microsoft.Taef.10.60.210621002\build\Binaries\$Platform\te.exe"
+    # $BinDir = "$root\bin\$OpenConsolePlatform\$Configuration"
 
-    [xml]$TestConfig = Get-Content "$root\tools\tests.xml"
+    # [xml]$TestConfig = Get-Content "$root\tools\tests.xml"
 
-    # check if WinAppDriver needs to be started
-    $WinAppDriverExe = $null
-    if ($AllTests -or $FtOnly -or $Test -eq "uia")
-    {
-        $WinAppDriverExe = [Diagnostics.Process]::Start("$root\dep\WinAppDriver\WinAppDriver.exe")
-    }
+    # # check if WinAppDriver needs to be started
+    # $WinAppDriverExe = $null
+    # if ($AllTests -or $FtOnly -or $Test -eq "uia")
+    # {
+    #     $WinAppDriverExe = [Diagnostics.Process]::Start("$root\dep\WinAppDriver\WinAppDriver.exe")
+    # }
 
-    # select tests to run
-    if ($AllTests)
-    {
-        $TestsToRun = $TestConfig.tests.test
-    }
-    elseif ($FTOnly)
-    {
-        $TestsToRun = $TestConfig.tests.test | Where-Object { $_.type -eq "ft" }
-    }
-    elseif ($Test)
-    {
-        $TestsToRun = $TestConfig.tests.test | Where-Object { $_.name -eq $Test }
-    }
-    else
-    {
-        # run unit tests by default
-        $TestsToRun = $TestConfig.tests.test | Where-Object { $_.type -eq "unit" }
-    }
+    # # select tests to run
+    # if ($AllTests)
+    # {
+    #     $TestsToRun = $TestConfig.tests.test
+    # }
+    # elseif ($FTOnly)
+    # {
+    #     $TestsToRun = $TestConfig.tests.test | Where-Object { $_.type -eq "ft" }
+    # }
+    # elseif ($Test)
+    # {
+    #     $TestsToRun = $TestConfig.tests.test | Where-Object { $_.name -eq $Test }
+    # }
+    # else
+    # {
+    #     # run unit tests by default
+    #     $TestsToRun = $TestConfig.tests.test | Where-Object { $_.type -eq "unit" }
+    # }
 
-    # run selected tests
-    foreach ($t in $TestsToRun)
-    {
-        if ($t.type -eq "unit")
-        {
-            & $TaefExePath "$BinDir\$($t.binary)" $TaefArgs
-        }
-        elseif ($t.type -eq "ft")
-        {
-            Invoke-TaefInNewWindow -OpenConsolePath $OpenConsolePath -TaefPath $TaefExePath -TestDll "$BinDir\$($t.binary)" -TaefArgs $TaefArgs
-        }
-        else
-        {
-            Write-Host "Invalid test type $t.type for test: $t.name" -ForegroundColor Red
-            return
-        }
-    }
+    # # run selected tests
+    # foreach ($t in $TestsToRun)
+    # {
+    #     if ($t.type -eq "unit")
+    #     {
+    #         & $TaefExePath "$BinDir\$($t.binary)" $TaefArgs
+    #     }
+    #     elseif ($t.type -eq "ft")
+    #     {
+    #         Invoke-TaefInNewWindow -OpenConsolePath $OpenConsolePath -TaefPath $TaefExePath -TestDll "$BinDir\$($t.binary)" -TaefArgs $TaefArgs
+    #     }
+    #     else
+    #     {
+    #         Write-Host "Invalid test type $t.type for test: $t.name" -ForegroundColor Red
+    #         return
+    #     }
+    # }
 
-    # stop running WinAppDriver if it was launched
-    if ($WinAppDriverExe)
-    {
-        Stop-Process -Id $WinAppDriverExe.Id
-    }
+    # # stop running WinAppDriver if it was launched
+    # if ($WinAppDriverExe)
+    # {
+    #     Stop-Process -Id $WinAppDriverExe.Id
+    # }
 }
 
 

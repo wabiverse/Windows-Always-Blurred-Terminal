@@ -14,18 +14,5 @@ if "%PLATFORM%" == "Win32" (
 )
 
 call %TAEF% ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\Conhost.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\TextBuffer.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\UnitTests_TerminalCore\Terminal.Core.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\Conhost.Interactivity.Win32.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\ConParser.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\ConAdapter.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\Types.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\til.unit.tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\UnitTests_TerminalApp\Terminal.App.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\UnitTests_Remoting\Remoting.Unit.Tests.dll ^
-    %OPENCON%\bin\%PLATFORM%\%_LAST_BUILD_CONF%\UnitTests_Control\Control.Unit.Tests.dll ^
-    %_TestHostAppPath%\TerminalApp.LocalTests.dll ^
-    %_TestHostAppPath%\SettingsModel.LocalTests.dll ^
     %*
 

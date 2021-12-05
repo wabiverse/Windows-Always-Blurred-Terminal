@@ -10,10 +10,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:mux="using:Microsoft.UI.Xaml.Controls"
       Background="Transparent"
-      mc:Ignorable="d">
+      mc:Ignorable="d"
+      mux:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
-    <Grid x:Name="Root"
-          Background="Transparent">
+    <Grid x:Name="Root" Background="{ThemeResource CustomAcrylicInAppLuminosity}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -119,7 +119,7 @@
                               MaxHeight="100"
                               Margin="0,8,0,0">
                     <TextBlock x:Name="ClipboardText"
-                               FontFamily="Cascadia Mono"
+                               FontFamily="FiraCode NF"
                                TextWrapping="Wrap" />
                 </ScrollViewer>
             </StackPanel>
@@ -148,7 +148,7 @@
                        TextWrapping="WrapWholeWords">
                 <Run x:Name="CouldNotOpenUriReason" /> <LineBreak />
                 <Run x:Name="UnopenedUri"
-                     FontFamily="Cascadia Mono" />
+                     FontFamily="FiraCode NF" />
             </TextBlock>
         </ContentDialog>
 

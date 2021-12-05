@@ -49,9 +49,9 @@
 #define CONTROL_SETTINGS(X)                                                                                                                              \
     X(winrt::hstring, ProfileName)                                                                                                                       \
     X(winrt::hstring, ProfileSource)                                                                                                                     \
-    X(bool, UseAcrylic, false)                                                                                                                           \
+    X(bool, UseAcrylic, true)                                                                                                                           \
     X(winrt::hstring, Padding, DEFAULT_PADDING)                                                                                                          \
-    X(winrt::hstring, FontFace, L"Consolas")                                                                                                             \
+    X(winrt::hstring, FontFace, L"FiraCode NF")                                                                                                             \
     X(int32_t, FontSize, DEFAULT_FONT_SIZE)                                                                                                              \
     X(winrt::Windows::UI::Text::FontWeight, FontWeight)                                                                                                  \
     X(IFontFeatureMap, FontFeatures)                                                                                                                     \

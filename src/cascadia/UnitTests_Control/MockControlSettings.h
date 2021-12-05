@@ -51,7 +51,7 @@ namespace ControlUnitTests
 
         WINRT_PROPERTY(winrt::hstring, ProfileName);
         WINRT_PROPERTY(winrt::hstring, ProfileSource);
-        WINRT_PROPERTY(bool, UseAcrylic, false);
+        WINRT_PROPERTY(bool, UseAcrylic, true);
         WINRT_PROPERTY(double, Opacity, .5);
         WINRT_PROPERTY(winrt::hstring, Padding, DEFAULT_PADDING);
         WINRT_PROPERTY(winrt::hstring, FontFace, L"Consolas");

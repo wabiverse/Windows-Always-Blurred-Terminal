@@ -6,8 +6,10 @@
 #include "App.g.cpp"
 
 using namespace winrt;
+using namespace winrt::Windows::ApplicationModel::Core;
 using namespace winrt::Windows::ApplicationModel::Activation;
 using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::UI::ViewManagement;
 using namespace winrt::Windows::UI::Xaml;
 using namespace winrt::Windows::UI::Xaml::Controls;
 using namespace winrt::Windows::UI::Xaml::Navigation;
@@ -61,6 +63,18 @@ namespace winrt::TerminalApp::implementation
 
                 Window::Current().Content(page);
                 Window::Current().Activate();
+                
+                const auto krakenPurple = Windows::UI::ColorHelper::FromArgb(
+                  (uint8_t)(0.5 * 4 + 0.5), 
+                  (uint8_t)(104 >> 8),
+                  (uint8_t)(79 >> 16),
+                  (uint8_t)(163 >> 24)
+                );
+
+                CoreApplication::GetCurrentView().TitleBar().ExtendViewIntoTitleBar(true);
+                const auto titleBar = ApplicationView::GetForCurrentView().TitleBar();
+                titleBar.ButtonBackgroundColor(krakenPurple);
+                titleBar.ButtonInactiveBackgroundColor(krakenPurple);
             }
         }
     }

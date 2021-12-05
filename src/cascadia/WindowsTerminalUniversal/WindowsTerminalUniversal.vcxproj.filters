@@ -11,7 +11,6 @@
     <AppxManifest Include="Package-Dev.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PropertySheet.props" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -20,17 +19,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Resources.devicefamily-core.resw">
-      <Filter>Resources</Filter>
-    </PRIResource>
     <PRIResource Include="Resources\en-US\Resources.resw">
       <Filter>Resources</Filter>
     </PRIResource>
-    <PRIResource Include="Resources.resw">
-      <Filter>Resources</Filter>
-    </PRIResource>
+    <PRIResource Include="Resources\Resources.resw" />
+    <PRIResource Include="Resources\Resources.devicefamily-core.resw" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="internal-background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(SolutionDir)tools\ConsoleTypes.natvis" />
   </ItemGroup>
 </Project>

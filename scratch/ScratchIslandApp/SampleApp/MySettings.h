@@ -17,85 +17,90 @@ namespace winrt::SampleApp::implementation
         // --------------------------- Core Settings ---------------------------
         //  All of these settings are defined in ICoreSettings.
 
-        WINRT_PROPERTY(til::color, DefaultForeground, DEFAULT_FOREGROUND);
-        WINRT_PROPERTY(til::color, DefaultBackground, DEFAULT_BACKGROUND);
-        WINRT_PROPERTY(til::color, SelectionBackground, DEFAULT_FOREGROUND);
-        WINRT_PROPERTY(int32_t, HistorySize, DEFAULT_HISTORY_SIZE);
-        WINRT_PROPERTY(int32_t, InitialRows, 30);
-        WINRT_PROPERTY(int32_t, InitialCols, 80);
+        // GetColorTableEntry needs to be implemented manually, to get a
+        // particular value from the array.
+        Microsoft::Terminal::Core::Color GetColorTableEntry(int32_t index) noexcept;
+        void ColorTable(std::array<Microsoft::Terminal::Core::Color, 16> colors);
+        std::array<Microsoft::Terminal::Core::Color, 16> ColorTable();
 
-        WINRT_PROPERTY(bool, SnapOnInput, true);
-        WINRT_PROPERTY(bool, AltGrAliasing, true);
-        WINRT_PROPERTY(til::color, CursorColor, DEFAULT_CURSOR_COLOR);
-        WINRT_PROPERTY(winrt::Microsoft::Terminal::Core::CursorStyle, CursorShape, winrt::Microsoft::Terminal::Core::CursorStyle::Vintage);
-        WINRT_PROPERTY(uint32_t, CursorHeight, DEFAULT_CURSOR_HEIGHT);
-        WINRT_PROPERTY(winrt::hstring, WordDelimiters, DEFAULT_WORD_DELIMITERS);
-        WINRT_PROPERTY(bool, CopyOnSelect, false);
-        WINRT_PROPERTY(bool, InputServiceWarning, true);
-        WINRT_PROPERTY(bool, FocusFollowMouse, false);
+        INHERITABLE_SETTING(MySettings, til::color, DefaultForeground, DEFAULT_FOREGROUND);
+        INHERITABLE_SETTING(MySettings, til::color, DefaultBackground, DEFAULT_BACKGROUND);
+        INHERITABLE_SETTING(MySettings, til::color, SelectionBackground, DEFAULT_FOREGROUND);
+        INHERITABLE_SETTING(MySettings, int32_t, HistorySize, DEFAULT_HISTORY_SIZE);
+        INHERITABLE_SETTING(MySettings, int32_t, InitialRows, 30);
+        INHERITABLE_SETTING(MySettings, int32_t, InitialCols, 80);
 
-        WINRT_PROPERTY(winrt::Windows::Foundation::IReference<winrt::Microsoft::Terminal::Core::Color>, TabColor, nullptr);
+        INHERITABLE_SETTING(MySettings, bool, SnapOnInput, true);
+        INHERITABLE_SETTING(MySettings, bool, AltGrAliasing, true);
+        INHERITABLE_SETTING(MySettings, til::color, CursorColor, DEFAULT_CURSOR_COLOR);
+        INHERITABLE_SETTING(MySettings, Microsoft::Terminal::Core::CursorStyle, CursorShape, Core::CursorStyle::Vintage);
+        INHERITABLE_SETTING(MySettings, uint32_t, CursorHeight, DEFAULT_CURSOR_HEIGHT);
+        INHERITABLE_SETTING(MySettings, hstring, WordDelimiters, DEFAULT_WORD_DELIMITERS);
+        INHERITABLE_SETTING(MySettings, bool, CopyOnSelect, false);
+        INHERITABLE_SETTING(MySettings, bool, FocusFollowMouse, false);
+        INHERITABLE_SETTING(MySettings, bool, TrimBlockSelection, false);
+        INHERITABLE_SETTING(MySettings, bool, DetectURLs, true);
 
-        WINRT_PROPERTY(winrt::Windows::Foundation::IReference<winrt::Microsoft::Terminal::Core::Color>, StartingTabColor, nullptr);
+        INHERITABLE_SETTING(MySettings, Windows::Foundation::IReference<Microsoft::Terminal::Core::Color>, TabColor, nullptr);
 
-        winrt::Microsoft::Terminal::Core::ICoreAppearance UnfocusedAppearance() { return {}; };
+        // When set, StartingTabColor allows to create a terminal with a "sticky" tab color.
+        // This color is prioritized above the TabColor (that is usually initialized based on profile settings).
+        // Due to this prioritization, the tab color will be preserved upon settings reload
+        // (even if the profile's tab color gets altered or removed).
+        // This property is expected to be passed only once upon terminal creation.
+        // TODO: to ensure that this property is not populated during settings reload,
+        // we should consider moving this property to a separate interface,
+        // passed to the terminal only upon creation.
+        INHERITABLE_SETTING(MySettings, Windows::Foundation::IReference<Microsoft::Terminal::Core::Color>, StartingTabColor, nullptr);
 
-        WINRT_PROPERTY(bool, TrimBlockSelection, false);
+        INHERITABLE_SETTING(MySettings, bool, IntenseIsBright);
+
+        INHERITABLE_SETTING(MySettings, bool, AdjustIndistinguishableColors);
+
         // ------------------------ End of Core Settings -----------------------
 
-        WINRT_PROPERTY(winrt::hstring, ProfileName);
-        WINRT_PROPERTY(bool, UseAcrylic, false);
-        WINRT_PROPERTY(double, Opacity, .5);
-        WINRT_PROPERTY(winrt::hstring, Padding, DEFAULT_PADDING);
-        WINRT_PROPERTY(winrt::hstring, FontFace, L"Consolas");
-        WINRT_PROPERTY(int32_t, FontSize, DEFAULT_FONT_SIZE);
+        INHERITABLE_SETTING(MySettings, hstring, ProfileName);
+        INHERITABLE_SETTING(MySettings, hstring, ProfileSource);
 
-        WINRT_PROPERTY(winrt::Windows::UI::Text::FontWeight, FontWeight);
+        INHERITABLE_SETTING(MySettings, bool, UseAcrylic, true);
+        INHERITABLE_SETTING(MySettings, double, Opacity, UseAcrylic() ? 0.5 : 1.0);
+        INHERITABLE_SETTING(MySettings, hstring, Padding, DEFAULT_PADDING);
+        INHERITABLE_SETTING(MySettings, hstring, FontFace, DEFAULT_FONT_FACE);
+        INHERITABLE_SETTING(MySettings, int32_t, FontSize, DEFAULT_FONT_SIZE);
 
-        WINRT_PROPERTY(winrt::hstring, BackgroundImage);
-        WINRT_PROPERTY(double, BackgroundImageOpacity, 1.0);
+        INHERITABLE_SETTING(MySettings, winrt::Windows::UI::Text::FontWeight, FontWeight);
+        INHERITABLE_SETTING(MySettings, IFontAxesMap, FontAxes);
+        INHERITABLE_SETTING(MySettings, IFontFeatureMap, FontFeatures);
 
-        WINRT_PROPERTY(winrt::Windows::UI::Xaml::Media::Stretch, BackgroundImageStretchMode, winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
-        WINRT_PROPERTY(winrt::Windows::UI::Xaml::HorizontalAlignment, BackgroundImageHorizontalAlignment, winrt::Windows::UI::Xaml::HorizontalAlignment::Center);
-        WINRT_PROPERTY(winrt::Windows::UI::Xaml::VerticalAlignment, BackgroundImageVerticalAlignment, winrt::Windows::UI::Xaml::VerticalAlignment::Center);
+        INHERITABLE_SETTING(MySettings, Model::ColorScheme, AppliedColorScheme);
+        INHERITABLE_SETTING(MySettings, hstring, BackgroundImage);
+        INHERITABLE_SETTING(MySettings, double, BackgroundImageOpacity, 1.0);
 
-        WINRT_PROPERTY(winrt::Microsoft::Terminal::Control::IKeyBindings, KeyBindings, nullptr);
+        INHERITABLE_SETTING(MySettings, winrt::Windows::UI::Xaml::Media::Stretch, BackgroundImageStretchMode, winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
+        INHERITABLE_SETTING(MySettings, winrt::Windows::UI::Xaml::HorizontalAlignment, BackgroundImageHorizontalAlignment, winrt::Windows::UI::Xaml::HorizontalAlignment::Center);
+        INHERITABLE_SETTING(MySettings, winrt::Windows::UI::Xaml::VerticalAlignment, BackgroundImageVerticalAlignment, winrt::Windows::UI::Xaml::VerticalAlignment::Center);
 
-        WINRT_PROPERTY(winrt::hstring, Commandline);
-        WINRT_PROPERTY(winrt::hstring, StartingDirectory);
-        WINRT_PROPERTY(winrt::hstring, StartingTitle);
-        WINRT_PROPERTY(bool, SuppressApplicationTitle);
-        WINRT_PROPERTY(winrt::hstring, EnvironmentVariables);
+        INHERITABLE_SETTING(MySettings, Microsoft::Terminal::Control::IKeyBindings, KeyBindings, nullptr);
 
-        WINRT_PROPERTY(winrt::Microsoft::Terminal::Control::ScrollbarState, ScrollState, winrt::Microsoft::Terminal::Control::ScrollbarState::Visible);
+        INHERITABLE_SETTING(MySettings, hstring, Commandline);
+        INHERITABLE_SETTING(MySettings, hstring, StartingDirectory);
+        INHERITABLE_SETTING(MySettings, hstring, StartingTitle);
+        INHERITABLE_SETTING(MySettings, bool, SuppressApplicationTitle);
+        INHERITABLE_SETTING(MySettings, hstring, EnvironmentVariables);
 
-        WINRT_PROPERTY(winrt::Microsoft::Terminal::Control::TextAntialiasingMode, AntialiasingMode, winrt::Microsoft::Terminal::Control::TextAntialiasingMode::Grayscale);
+        INHERITABLE_SETTING(MySettings, Microsoft::Terminal::Control::ScrollbarState, ScrollState, Microsoft::Terminal::Control::ScrollbarState::Visible);
+        INHERITABLE_SETTING(MySettings, bool, UseAtlasEngine, false);
 
-        WINRT_PROPERTY(bool, RetroTerminalEffect, false);
-        WINRT_PROPERTY(bool, ForceFullRepaintRendering, false);
-        WINRT_PROPERTY(bool, SoftwareRendering, false);
-        WINRT_PROPERTY(bool, ForceVTInput, false);
+        INHERITABLE_SETTING(MySettings, Microsoft::Terminal::Control::TextAntialiasingMode, AntialiasingMode, Microsoft::Terminal::Control::TextAntialiasingMode::Grayscale);
 
-        WINRT_PROPERTY(winrt::hstring, PixelShaderPath);
+        INHERITABLE_SETTING(MySettings, bool, RetroTerminalEffect, false);
+        INHERITABLE_SETTING(MySettings, bool, ForceFullRepaintRendering, false);
+        INHERITABLE_SETTING(MySettings, bool, SoftwareRendering, false);
+        INHERITABLE_SETTING(MySettings, bool, ForceVTInput, false);
 
-        WINRT_PROPERTY(bool, DetectURLs, true);
-
-    private:
-        std::array<winrt::Microsoft::Terminal::Core::Color, COLOR_TABLE_SIZE> _ColorTable;
-
-    public:
-        winrt::Microsoft::Terminal::Core::Color GetColorTableEntry(int32_t index) noexcept { return _ColorTable.at(index); }
-        std::array<winrt::Microsoft::Terminal::Core::Color, 16> ColorTable() { return _ColorTable; }
-        void ColorTable(std::array<winrt::Microsoft::Terminal::Core::Color, 16> /*colors*/) {}
-
-        MySettings()
-        {
-            const auto campbellSpan = ::Microsoft::Console::Utils::CampbellColorTable();
-            std::transform(campbellSpan.begin(), campbellSpan.end(), _ColorTable.begin(), [](auto&& color) {
-                return static_cast<winrt::Microsoft::Terminal::Core::Color>(til::color{ color });
-            });
-        }
-    };
+        INHERITABLE_SETTING(MySettings, hstring, PixelShaderPath);
+        INHERITABLE_SETTING(MySettings, bool, IntenseIsBold);
+    }
 }
 
 namespace winrt::SampleApp::factory_implementation

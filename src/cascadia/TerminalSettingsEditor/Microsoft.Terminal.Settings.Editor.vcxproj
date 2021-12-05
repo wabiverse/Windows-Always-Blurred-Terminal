@@ -5,6 +5,7 @@
     be copied into our folder. In the case of Microsoft.Ui.Xaml, it seems to copy
     literally everything EXCEPT its .winmd file, which allows us to keep building.
     -->
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <ItemDefinitionGroup>
     <Reference>
       <Private>false</Private>
@@ -259,7 +260,6 @@
     <ProjectReference Include="$(OpenConsoleDir)src\cascadia\TerminalConnection\TerminalConnection.vcxproj">
       <Private>false</Private>
     </ProjectReference>
-
     <ProjectReference Include="$(OpenConsoleDir)src\cascadia\TerminalControl\dll\TerminalControl.vcxproj">
       <!-- Private:false and ReferenceOutputAssembly:false, in combination with
       the manual reference to TerminalControl.winmd below make sure that this
@@ -272,7 +272,6 @@
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
-
   <ItemGroup>
     <!-- Manually add a reference to TerminalControl here. We need this so
     MDMERGE will know where the TermControl types are defined. However, we need
@@ -291,20 +290,22 @@
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
     </Reference>
   </ItemGroup>
-
   <ItemDefinitionGroup>
     <Link>
       <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-
   <Import Project="$(OpenConsoleDir)src\cppwinrt.build.post.props" />
-  <Import Project="..\..\..\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets" Condition="Exists('..\..\..\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.0-prerelease.210913003\build\native\Microsoft.UI.Xaml.targets'))" />
+    <Error Condition="!Exists('$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(OpenConsoleDir)\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
-  <Import Project="$(SolutionDir)build\rules\CollectWildcardResources.targets" />
+  <Import Project="..\..\..\build\rules\CollectWildcardResources.targets" />
+  <Import Project="..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets" Condition="Exists('..\..\..\packages\Microsoft.UI.Xaml.2.7.1-prerelease.211026002\build\native\Microsoft.UI.Xaml.targets')" />
+  <Import Project="..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.211028.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
 </Project>

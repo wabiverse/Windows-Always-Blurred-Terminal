@@ -35,7 +35,7 @@
                            TargetType="Grid">
                         <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
                     </Style>
-
+                    
                     <!--
                         We need to manually create the error text brush as a
                         theme-dependent brush. SystemControlErrorTextForegroundBrush
